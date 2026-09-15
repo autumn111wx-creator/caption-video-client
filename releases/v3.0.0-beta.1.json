@@ -1,0 +1,10 @@
+{
+  "tag": "v3.0.0-beta.1",
+  "application_version": "3.0 试用版",
+  "date": "2026-09-15",
+  "asset": "caption-video-client-v3.0.0-beta.1-windows-x64.zip",
+  "size_bytes": 105149413,
+  "sha256": "0079e3a3a036ca6d067692ef04db545b5a6fbb8431904cd99e781d7eb1a5786c",
+  "executable_sha256": "7326e3958dda87f22d754eb79bf3cfc4683a96359a8d2f2cadcdb1c0ca832ba4",
+  "notes": "Original desktop trial archive; uploaded without rebuilding or modifying the executable."
+}

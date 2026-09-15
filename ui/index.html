@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>黑底字幕视频工具</title>
+<style>
+:root{font-family:"Microsoft YaHei UI","Segoe UI",sans-serif;color-scheme:dark;--bg:#0b1220;--panel:#111b2d;--panel2:#162238;--line:#253552;--text:#eef4ff;--muted:#91a2bc;--blue:#4f8cff;--blue2:#72a6ff;--green:#45d3a5;--danger:#ff7d89;--shadow:0 16px 42px #03071266}
+*{box-sizing:border-box}html,body{height:100%}body{margin:0;background:linear-gradient(140deg,#0b1220 0%,#101a2b 55%,#0b1425 100%);color:var(--text);overflow:hidden}button,input,select,textarea{font:inherit}button{color:inherit}.app{height:100%;display:flex;flex-direction:column}.topbar{height:66px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;border-bottom:1px solid var(--line);background:#0d1728ee;box-shadow:0 8px 24px #0003;flex:none}.brand{display:flex;align-items:center;gap:13px}.logo{width:38px;height:38px;border-radius:11px;background:linear-gradient(145deg,#4b82ff,#36cfa0);position:relative;box-shadow:0 8px 22px #2768e855}.logo:before{content:"";position:absolute;left:14px;top:10px;border-left:14px solid #fff;border-top:9px solid transparent;border-bottom:9px solid transparent}.brand h1{font-size:17px;margin:0}.brand p{font-size:11px;color:var(--muted);margin:3px 0 0}.running{display:flex;align-items:center;gap:8px;color:#bbf7df;font-size:12px;border:1px solid #2e6d5b;background:#102a28;padding:7px 11px;border-radius:999px}.dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 0 4px #45d3a522}.workspace{min-height:0;flex:1;display:grid;grid-template-columns:minmax(500px,1.15fr) minmax(360px,.85fr);gap:18px;padding:18px 20px 16px;overflow:auto}.column{display:flex;flex-direction:column;gap:15px}.panel{background:linear-gradient(180deg,#152137,#101a2b);border:1px solid var(--line);border-radius:15px;box-shadow:var(--shadow)}.panel-head{display:flex;align-items:center;justify-content:space-between;padding:15px 17px 12px;border-bottom:1px solid #21314c}.panel-head h2{font-size:14px;margin:0}.panel-head span{font-size:11px;color:var(--muted)}.panel-body{padding:15px 17px}.source-row{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center}.source-main{display:flex;align-items:center;gap:11px;min-width:0}.file-icon{width:38px;height:38px;border-radius:9px;background:#203455;display:grid;place-items:center;font-size:18px}.source-copy{min-width:0}.source-copy b{display:block;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.source-copy small{display:block;color:var(--muted);font-size:11px;margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.secondary,.tiny{border:1px solid #3a5278;background:#162743;border-radius:9px;padding:9px 13px;cursor:pointer;font-size:12px}.secondary:hover,.tiny:hover{border-color:var(--blue2);background:#1b3153}.source-actions{display:flex;gap:7px}.tiny{padding:8px 10px;color:#b8c8df}.tiny.hide{display:none}.upload{border:1px dashed #496184;border-radius:11px;background:#0d1728;padding:12px 14px;display:flex;align-items:center;justify-content:space-between;gap:12px;cursor:pointer;margin-bottom:11px}.upload:hover{border-color:var(--blue2);background:#12213a}.upload strong{font-size:13px}.upload span{font-size:11px;color:var(--muted)}.upload input{display:none}.editor{width:100%;min-height:245px;resize:vertical;background:#0b1423;color:var(--text);border:1px solid #2a3d5d;border-radius:11px;padding:13px 14px;line-height:1.7;font-size:14px;outline:none}.editor:focus,select:focus,input[type=number]:focus{border-color:var(--blue);box-shadow:0 0 0 3px #4f8cff1f}.editor-meta{display:flex;justify-content:space-between;color:var(--muted);font-size:11px;margin-top:8px}.config-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}.field{margin-bottom:13px}.field.full{grid-column:1/-1}.field label{display:flex;align-items:center;justify-content:space-between;font-size:12px;color:#cbd8ea;margin-bottom:7px}.field label small{color:var(--muted)}select,input[type=number]{width:100%;height:39px;color:var(--text);background:#0c1728;border:1px solid #2e4365;border-radius:9px;padding:0 10px;outline:none}.speed-row{display:grid;grid-template-columns:1fr 76px;gap:11px;align-items:center}.speed-row input[type=range]{width:100%;accent-color:var(--blue)}.speed-row input[type=number]{text-align:center}.primary{width:100%;border:0;border-radius:11px;padding:13px 18px;background:linear-gradient(105deg,#4c83ff,#54d6b0);color:#06111d;font-weight:800;cursor:pointer;box-shadow:0 10px 26px #3e7bea44}.primary:hover{filter:brightness(1.07)}.primary:disabled{opacity:.5;cursor:wait}.config-note{margin:12px 0 0;padding:10px 12px;border-radius:9px;background:#0c1727;color:var(--muted);font-size:11px;line-height:1.65;border:1px solid #203351}.status-card{padding:14px 15px;border:1px solid #2b4061;background:#0c1728;border-radius:11px;margin-bottom:13px}.status-title{font-size:13px;font-weight:700}.status-detail{font-size:11px;line-height:1.55;color:var(--muted);margin-top:5px}.status-card.working{border-color:#3d68a7}.status-card.done{border-color:#2b8067}.status-card.error{border-color:#914550}.status-card.error .status-title{color:#ffb8bf}.spin{display:inline-block;width:12px;height:12px;border:2px solid #4a678f;border-top-color:#87b2ff;border-radius:50%;animation:spin .8s linear infinite;margin-right:7px;vertical-align:-2px}@keyframes spin{to{transform:rotate(360deg)}}.preview{aspect-ratio:16/9;background:#03060b;border:1px solid #24344e;border-radius:11px;display:grid;place-items:center;color:#5e718e;font-size:12px;text-align:center;overflow:hidden;margin-bottom:13px}.preview video{width:100%;height:100%;object-fit:contain}.outputs{display:grid;gap:8px}.output{display:flex;align-items:center;justify-content:space-between;border:1px solid #263a58;background:#0d1829;border-radius:10px;padding:10px 12px;opacity:.48}.output.ready{opacity:1}.output b{font-size:12px}.output small{display:block;color:var(--muted);font-size:10px;margin-top:3px}.output a{pointer-events:none;text-decoration:none;color:#bfd3f4;border:1px solid #3f587e;border-radius:7px;padding:6px 9px;font-size:11px}.output.ready a{pointer-events:auto}.guide-list{display:grid;gap:9px}.guide-item{display:grid;grid-template-columns:24px 1fr;gap:9px;color:#c7d4e6;font-size:11px;line-height:1.55}.guide-num{width:22px;height:22px;border-radius:7px;background:#223c67;color:#91b6ff;display:grid;place-items:center;font-weight:700}.statusbar{height:42px;flex:none;border-top:1px solid var(--line);background:#0a1322;display:flex;align-items:center;justify-content:space-between;padding:0 17px;color:var(--muted);font-size:11px}.status-left,.status-actions{display:flex;align-items:center;gap:13px;min-width:0}.status-left span{white-space:nowrap}.status-path{overflow:hidden;text-overflow:ellipsis;max-width:420px}.status-actions button{border:0;background:transparent;color:#9fb1ca;font-size:11px;cursor:pointer;padding:5px 7px}.status-actions button:hover{color:white}.status-actions .exit{color:#ff9ca5}.status-actions .exit:hover{color:#ffc4ca}.only-narrow{display:none}
+@media(max-width:980px){.workspace{grid-template-columns:1fr}.status-path{max-width:220px}.preview{max-height:280px}.only-narrow{display:inline}}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="topbar">
+    <div class="brand"><div class="logo"></div><div><h1>黑底字幕视频工具</h1><p>桌面客户端 · 文字配音 · 视频字幕</p></div></div>
+    <div class="running"><span class="dot"></span><span id="topStatus">客户端运行中</span></div>
+  </header>
+
+  <main class="workspace">
+    <section class="column">
+      <div class="panel">
+        <div class="panel-head"><h2>背景视频（可选）</h2><span>不选择时自动使用纯黑背景</span></div>
+        <div class="panel-body">
+          <div class="source-row">
+            <div class="source-main"><div class="file-icon">🎬</div><div class="source-copy"><b id="videoName">未选择视频 · 默认黑色背景</b><small id="videoPath">支持 MP4、MOV、MKV、WebM、AVI、WMV、M4V、FLV</small></div></div>
+            <div class="source-actions"><button class="tiny hide" id="clearVideo">清除</button><button class="secondary" id="pickVideo">选择视频</button></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head"><h2>字幕文字</h2><span id="count">0 字</span></div>
+        <div class="panel-body">
+          <label class="upload"><div><strong>导入 TXT / SRT</strong><br><span>也可以直接把文字粘贴到下方</span></div><span id="fileName">选择文字文件 ›</span><input type="file" id="file" accept=".txt,.srt,text/plain,application/x-subrip"></label>
+          <textarea class="editor" id="text" placeholder="在这里输入或粘贴需要配音、显示成字幕的文字……"></textarea>
+          <div class="editor-meta"><span>SRT 会提取字幕正文，并按本次配音重新生成时间轴</span><span>最多 30,000 字</span></div>
+        </div>
+      </div>
+    </section>
+
+    <aside class="column">
+      <div class="panel">
+        <div class="panel-head"><h2>生成配置</h2><span>常用选项集中在这里</span></div>
+        <div class="panel-body">
+          <div class="config-grid">
+            <div class="field full"><label for="voice">配音音色 <small id="voiceSource">正在读取…</small></label><select id="voice"></select></div>
+            <div class="field full"><label for="speed">语音倍速 <small>0.5–2.0，步长 0.1</small></label><div class="speed-row"><input id="speed" type="range" min="0.5" max="2" step="0.1" value="0.9"><input id="speedNumber" type="number" min="0.5" max="2" step="0.1" value="0.9"></div></div>
+            <div class="field"><label for="videoFormat">视频格式</label><select id="videoFormat"></select></div>
+            <div class="field"><label for="audioFormat">音频格式</label><select id="audioFormat"></select></div>
+          </div>
+          <button class="primary" id="go">开始生成视频、音频和字幕</button>
+          <div class="config-note">说明：选择背景视频后，画面会按配音时长自动循环或裁切，并使用本次生成的配音；不选则生成纯黑背景。所有成品都保存在软件旁边的“成品”文件夹。</div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head"><h2>任务与成品</h2><span id="version">试用版</span></div>
+        <div class="panel-body">
+          <div class="status-card" id="status"><div class="status-title">等待文稿</div><div class="status-detail">输入文字后，点击上方唯一的开始按钮。</div></div>
+          <div class="preview" id="preview">生成完成后在这里预览<br>非 MP4 / WebM 格式请直接打开成品文件</div>
+          <div class="outputs">
+            <div class="output" id="outVideo"><div><b>视频文件</b><small id="videoExt">等待生成</small></div><a>保存/打开</a></div>
+            <div class="output" id="outAudio"><div><b>音频文件</b><small id="audioExt">等待生成</small></div><a>保存/打开</a></div>
+            <div class="output" id="outSrt"><div><b>SRT 字幕</b><small>可继续编辑</small></div><a>保存/打开</a></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head"><h2>快速说明</h2><span>无需额外安装 FFmpeg</span></div>
+        <div class="panel-body guide-list">
+          <div class="guide-item"><span class="guide-num">1</span><span>可选一段背景视频；不选就是黑色背景。</span></div>
+          <div class="guide-item"><span class="guide-num">2</span><span>导入 TXT/SRT 或粘贴文字，选音色、倍速和成品格式。</span></div>
+          <div class="guide-item"><span class="guide-num">3</span><span>新音色配置放进“音色配置”目录，重启后自动识别。</span></div>
+        </div>
+      </div>
+    </aside>
+  </main>
+
+  <footer class="statusbar">
+    <div class="status-left"><span><span class="dot"></span> 本地服务正常</span><span id="voiceCount">音色 0 个</span><span class="status-path" id="outputPath">成品目录：读取中…</span></div>
+    <div class="status-actions"><button id="openVoices">音色配置</button><button id="openOutput">打开成品</button><button class="exit" id="exitApp">退出软件</button></div>
+  </footer>
+</div>
+<script>
+const $=id=>document.getElementById(id);let fileName='文稿.txt',sourceVideo='',timer=null,config={};
+function setStatus(title,detail,kind=''){const box=$('status');box.className='status-card '+kind;box.innerHTML='<div class="status-title">'+(kind==='working'?'<span class="spin"></span>':'')+escapeHtml(title)+'</div><div class="status-detail">'+escapeHtml(detail)+'</div>';}
+function escapeHtml(value){return String(value).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));}
+function fillSelect(select,data,selected){select.textContent='';Object.entries(data).forEach(([value,item])=>{const o=document.createElement('option');o.value=value;o.textContent=item.label;if(value===selected)o.selected=true;select.appendChild(o)});}
+async function loadConfig(){try{const r=await fetch('/api/config');config=await r.json();$('version').textContent=config.version;$('voiceCount').textContent='音色 '+config.voice_count+' 个';$('outputPath').textContent='成品目录：'+config.output_folder;$('voice').textContent='';config.voices.forEach((item,index)=>{const o=document.createElement('option');o.value=item.voice;o.textContent=item.name+(item.source==='内置'?'':' · 配置文件');if(item.voice==='zh-CN-XiaoxiaoNeural')o.selected=true;$('voice').appendChild(o)});$('voiceSource').textContent=config.voice_count+' 个可用';fillSelect($('videoFormat'),config.video_formats,'mp4');fillSelect($('audioFormat'),config.audio_formats,'wav')}catch(e){setStatus('配置读取失败',e.message,'error')}}
+function decodeFile(file){return file.arrayBuffer().then(buf=>{try{return new TextDecoder('utf-8',{fatal:true}).decode(buf)}catch{return new TextDecoder('gb18030').decode(buf)}})}
+$('file').addEventListener('change',async e=>{const f=e.target.files?.[0];if(!f)return;fileName=f.name;try{$('text').value=await decodeFile(f);$('fileName').textContent=f.name;updateCount();setStatus('文字已导入','检查配置后即可开始生成。')}catch(err){setStatus('文字读取失败',String(err),'error')}});
+function updateCount(){$('count').textContent=$('text').value.length+' 字'}$('text').addEventListener('input',updateCount);
+function setSpeed(value){const n=Math.min(2,Math.max(.5,Math.round(Number(value)*10)/10));$('speed').value=n.toFixed(1);$('speedNumber').value=n.toFixed(1)}$('speed').addEventListener('input',e=>setSpeed(e.target.value));$('speedNumber').addEventListener('change',e=>setSpeed(e.target.value));
+$('pickVideo').addEventListener('click',async()=>{try{if(!window.pywebview?.api){setStatus('客户端接口尚未就绪','请稍等一秒再选择视频。','error');return}const path=await window.pywebview.api.pick_video();if(!path)return;sourceVideo=path;const name=path.split(/[\\/]/).pop();$('videoName').textContent=name;$('videoPath').textContent=path;$('clearVideo').classList.remove('hide');setStatus('背景视频已选择','将使用该视频画面并自动匹配配音时长。')}catch(e){setStatus('无法选择视频',String(e),'error')}});
+$('clearVideo').addEventListener('click',()=>{sourceVideo='';$('videoName').textContent='未选择视频 · 默认黑色背景';$('videoPath').textContent=(config.video_inputs||[]).map(x=>x.toUpperCase()).join('、');$('clearVideo').classList.add('hide')});
+async function nativeCall(name){try{if(window.pywebview?.api?.[name])await window.pywebview.api[name]()}catch(e){setStatus('操作失败',String(e),'error')}}$('openVoices').onclick=()=>nativeCall('open_voices');$('openOutput').onclick=()=>nativeCall('open_output');$('exitApp').onclick=async()=>{try{await fetch('/api/app/exit',{method:'POST'})}catch{await nativeCall('exit_app')}};
+function resetOutputs(){['outVideo','outAudio','outSrt'].forEach(id=>{$(id).classList.remove('ready');$(id).querySelector('a').removeAttribute('href')});$('preview').innerHTML='生成完成后在这里预览<br>非 MP4 / WebM 格式请直接打开成品文件'}
+async function poll(id){try{const r=await fetch('/api/job/'+id);if(!r.ok)throw Error('无法查询任务进度');const d=await r.json();if(d.state==='running'){setStatus('正在制作',d.message,'working');timer=setTimeout(()=>poll(id),900);return}$('go').disabled=false;$('topStatus').textContent='客户端运行中';if(d.state==='error'){setStatus('制作失败',d.message,'error');return}setStatus('制作完成',d.folder,'done');const cards={video:'outVideo',audio:'outAudio',srt:'outSrt'};Object.entries(cards).forEach(([kind,id])=>{const card=$(id),a=card.querySelector('a');card.classList.add('ready');a.href=d.urls[kind];a.download=fileName.replace(/\.(txt|srt)$/i,'')+'.'+d.formats[kind]});$('videoExt').textContent=d.formats.video.toUpperCase()+' 视频';$('audioExt').textContent=d.formats.audio.toUpperCase()+' 音频';const box=$('preview');if(['mp4','webm'].includes(d.formats.video)){box.textContent='';const v=document.createElement('video');v.controls=true;v.preload='metadata';v.src=d.urls.video;box.appendChild(v)}else{box.innerHTML=d.formats.video.toUpperCase()+' 已生成<br>请点击“打开成品”查看文件'}}catch(e){$('go').disabled=false;$('topStatus').textContent='客户端运行中';setStatus('连接中断',e.message,'error')}}
+$('go').addEventListener('click',async()=>{const text=$('text').value;if(!text.trim()){setStatus('请先输入文字','可导入 TXT/SRT，或直接粘贴文字。','error');return}if(text.length>30000){setStatus('文稿太长','当前一次最多处理 30,000 字。','error');return}$('go').disabled=true;$('topStatus').textContent='正在生成';resetOutputs();setStatus('正在提交任务','软件会自动完成配音、字幕和视频处理。','working');try{const body={text,filename:fileName,voice:$('voice').value,speed:Number($('speedNumber').value),video_format:$('videoFormat').value,audio_format:$('audioFormat').value,source_video:sourceVideo||null};const r=await fetch('/api/create',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});const d=await r.json();if(!r.ok)throw Error(d.detail||'任务提交失败');poll(d.job_id)}catch(e){$('go').disabled=false;$('topStatus').textContent='客户端运行中';setStatus('无法开始制作',e.message,'error')}});
+document.addEventListener('pywebviewready',()=>{$('topStatus').textContent='客户端运行中'});loadConfig();updateCount();setSpeed(.9);
+</script>
+</body>
+</html>

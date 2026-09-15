@@ -1,0 +1,19 @@
+本工具在旧版“黑底字幕视频工具”的基础上改造，继续使用以下开源项目：
+
+1. FFmpeg：视频、音频转码及 ASS/SRT 字幕烧录
+   https://github.com/FFmpeg/FFmpeg
+2. edge-tts：Microsoft Edge 在线语音合成接口
+   https://github.com/rany2/edge-tts
+3. pywebview：Windows 原生客户端窗口
+   https://github.com/r0x0r/pywebview
+4. pystray：Windows 右下角托盘图标与退出菜单
+   https://github.com/moses-palmer/pystray
+5. FastAPI / Uvicorn：仅监听 127.0.0.1 的本地界面服务
+   https://github.com/fastapi/fastapi
+   https://github.com/encode/uvicorn
+
+实现“给现有视频加字幕”前参考了以下 MIT 项目的处理流程：
+- m1guelpf/auto-subtitle：Whisper 生成 SRT，再用 FFmpeg subtitles 滤镜叠加到视频
+  https://github.com/m1guelpf/auto-subtitle
+
+本试用版没有打包 Whisper 模型：当前工具由用户提供 TXT/SRT，并按 Edge TTS 配音重新生成时间轴，因此体积更小、启动更快。
