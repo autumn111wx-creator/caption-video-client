@@ -20,18 +20,13 @@ import traceback
 
 
 ROOT = Path(sys.executable).resolve().parent if getattr(sys, "frozen", False) else Path(__file__).resolve().parent
-DEFAULT_INPUT = Path(r"C:\Users\zheng.zhang\Desktop\GPTWORK_NO_DELETE\文字.txt")
+DEFAULT_INPUT = ROOT / "文字.txt"
 DEFAULT_DICTIONARY = ROOT / "发音词典.tsv"
 WORK = ROOT / "work" / "caption_video_runs"
-KNOWN_FFMPEG = Path(
-    r"C:\Users\zheng.zhang\AppData\Local\Microsoft\WinGet\Packages"
-    r"\Gyan.FFmpeg.Essentials_Microsoft.Winget.Source_8wekyb3d8bbwe"
-    r"\ffmpeg-9.0.1-essentials_build\bin\ffmpeg.exe"
-)
 
 
 def find_ffmpeg() -> tuple[Path, Path]:
-    choices = [ROOT / "bin" / "ffmpeg.exe", os.environ.get("FFMPEG_EXE"), shutil.which("ffmpeg"), KNOWN_FFMPEG]
+    choices = [ROOT / "bin" / "ffmpeg.exe", os.environ.get("FFMPEG_EXE"), shutil.which("ffmpeg")]
     for choice in choices:
         if choice and Path(choice).is_file():
             executable = Path(choice).resolve()
@@ -471,3 +466,4 @@ if __name__ == "__main__":
         else:
             traceback.print_exc()
         sys.exit(1)
+
