@@ -1,0 +1,98 @@
+name: Build and publish Windows release
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/release-v3.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-release:
+    runs-on: windows-latest
+    env:
+      RELEASE_TAG: v3.0.0-beta.1
+      RELEASE_FILE: caption-video-client-v3.0.0-beta.1-windows-x64.zip
+      GH_TOKEN: ${{ github.token }}
+
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: pip
+          cache-dependency-path: requirements-lock.txt
+
+      - name: Install Python dependencies
+        shell: pwsh
+        run: |
+          python -m venv .venv
+          .\.venv\Scripts\python.exe -m pip install --upgrade pip
+          .\.venv\Scripts\python.exe -m pip install -r requirements-lock.txt
+
+      - name: Download FFmpeg
+        shell: pwsh
+        run: |
+          $archive = Join-Path $env:RUNNER_TEMP "ffmpeg-release-essentials.zip"
+          $extract = Join-Path $env:RUNNER_TEMP "ffmpeg"
+          Invoke-WebRequest -Uri "https://www.gyan.dev/ffmpeg/builds/ffmpeg-release-essentials.zip" -OutFile $archive
+          Expand-Archive -LiteralPath $archive -DestinationPath $extract -Force
+          $ffmpeg = Get-ChildItem -LiteralPath $extract -Recurse -Filter ffmpeg.exe | Select-Object -First 1
+          $ffprobe = Get-ChildItem -LiteralPath $extract -Recurse -Filter ffprobe.exe | Select-Object -First 1
+          if (-not $ffmpeg -or -not $ffprobe) { throw "FFmpeg download did not contain ffmpeg.exe and ffprobe.exe" }
+          New-Item -ItemType Directory -Path bin -Force | Out-Null
+          Copy-Item -LiteralPath $ffmpeg.FullName -Destination bin\ffmpeg.exe
+          Copy-Item -LiteralPath $ffprobe.FullName -Destination bin\ffprobe.exe
+
+      - name: Build portable client
+        shell: pwsh
+        run: |
+          powershell -ExecutionPolicy Bypass -File scripts\build.ps1
+          $built = Get-ChildItem -LiteralPath dist -Recurse -Filter caption-video-client-windows-x64.zip |
+            Sort-Object LastWriteTime -Descending |
+            Select-Object -First 1
+          if (-not $built) { throw "Build ZIP was not created" }
+          $target = Join-Path $PWD $env:RELEASE_FILE
+          Copy-Item -LiteralPath $built.FullName -Destination $target -Force
+          $hash = (Get-FileHash -Algorithm SHA256 -LiteralPath $target).Hash
+          "RELEASE_ZIP=$target" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+          "RELEASE_SHA256=$hash" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+
+      - name: Write release notes
+        shell: pwsh
+        run: |
+          @(
+            "## 下载与运行",
+            "",
+            "下载下方的 **$env:RELEASE_FILE**，完整解压后双击 **黑底字幕视频工具.exe**。",
+            "",
+            "不需要安装 Python 或 FFmpeg；自然语音合成需要联网。",
+            "",
+            "## 本版功能",
+            "",
+            "- 可选择现有视频作为背景并添加配音字幕。",
+            "- 不选择背景视频时，默认生成黑色背景视频。",
+            "- 支持 TXT、SRT 和常用视频、音频格式。",
+            "- 配音速度 0.5–2.0 倍，步长 0.1。",
+            "- 支持状态栏和右下角托盘退出。",
+            "- 音色 JSON 放入 音色配置 目录，重启自动识别。",
+            "",
+            "SHA256: `$env:RELEASE_SHA256`"
+          ) | Set-Content -LiteralPath release-notes.md -Encoding utf8
+
+      - name: Publish GitHub Release
+        shell: pwsh
+        run: |
+          if (gh release view $env:RELEASE_TAG 2>$null) {
+            gh release upload $env:RELEASE_TAG $env:RELEASE_ZIP --clobber
+            gh release edit $env:RELEASE_TAG --title "$env:RELEASE_TAG · 当前最新版 Windows 客户端" --notes-file release-notes.md --latest
+          } else {
+            gh release create $env:RELEASE_TAG $env:RELEASE_ZIP --target $env:GITHUB_SHA --title "$env:RELEASE_TAG · 当前最新版 Windows 客户端" --notes-file release-notes.md --latest
+          }
