@@ -54,7 +54,7 @@ jobs:
       - name: Build portable client
         shell: pwsh
         run: |
-          powershell -ExecutionPolicy Bypass -File scripts\build.ps1
+          pwsh -File scripts\build.ps1
           $built = Get-ChildItem -LiteralPath dist -Recurse -Filter caption-video-client-windows-x64.zip |
             Sort-Object LastWriteTime -Descending |
             Select-Object -First 1
