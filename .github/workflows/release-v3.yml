@@ -84,7 +84,7 @@ jobs:
             "- 支持状态栏和右下角托盘退出。",
             "- 音色 JSON 放入 音色配置 目录，重启自动识别。",
             "",
-            "SHA256: `$env:RELEASE_SHA256`"
+            "SHA256: $env:RELEASE_SHA256"
           ) | Set-Content -LiteralPath release-notes.md -Encoding utf8
 
       - name: Publish GitHub Release
